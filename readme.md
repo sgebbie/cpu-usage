@@ -7,9 +7,9 @@ i3-status.
 An example graph might look like:
 
 ```
-___▃▃▃▂▂▂█▂▁______▁_
+▁▁▁▃▃▃▂▂▂█▂▁▁▁▁▁▁▁▃▁
 ```
-(note, output will vary depending on the font used).
+(note, rendering will vary depending on the font used).
 
 The graph is output to:
 
