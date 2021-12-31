@@ -1,7 +1,7 @@
 # CPU Usage
 
-This is a simple utility to read /proc/stat and maintain a text based CPU usage
-graph. This is intended to be used in conjunction with status bars like
+This is a simple utility to read `/proc/stat` and maintain a text based CPU
+usage graph. This is intended to be used in conjunction with status bars like
 i3-status.
 
 An example graph might look like:
@@ -9,14 +9,16 @@ An example graph might look like:
 ```
 ___▃▃▃▂▂▂█▂▁______▁_
 ```
+(note, output will vary depending on the font used).
 
 The graph is output to:
 
-- `${HOME}/.cpu-usage
+- `${HOME}/.cpu-usage`
 
-Additionally, the last CPU usage calcation is record as a decimal percentage in:
+Additionally, the last CPU usage calculation is record as a decimal percentage
+in:
 
-- `${HOME}/.cpu-usage.spot
+- `${HOME}/.cpu-usage.spot`
 
 ## Usage
 
@@ -40,7 +42,7 @@ Examples:
 ## Integration
 
 One potential usage is to configure i3-status to incorporate the graph in the
-the bar's display.
+bar's display.
 
 This is can done by configuring `bar { status_command
 /path/to/my/i3-status-mixin }` in  `~/config/i3/config`. And then creating a
