@@ -20,6 +20,17 @@ in:
 
 - `${HOME}/.cpu-usage.spot`
 
+## Build
+
+Just run:
+
+```bash
+make
+```
+
+- `make clean` to remove the build,
+- `make cpu-usage` if you want to be explicit.
+
 ## Usage
 
 ```
