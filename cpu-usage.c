@@ -1,5 +1,5 @@
 /*
- * Stewart Gebbie - 2021
+ * Stewart Gebbie - 2021-2022
  *
  * Calculate the CPU usage and display it.
  */
@@ -14,7 +14,7 @@
 #include <fcntl.h>
 
 #define USE_MICRO_SECONDS 1
-#define LOG_DEBUG 1
+#define LOG_DEBUG 0
 
 /*
 U+2581 LOWER ONE EIGHTH BLOCK
@@ -52,6 +52,8 @@ int main(int argc, char** argv) {
 	unsigned int usage_length = 20;
 
 	bool use_background = true;
+	bool show_cpu_count = false;
+	bool show_clock_tck = false;
 
 	// collect clock tick length
 	const long clk_tck = sysconf(_SC_CLK_TCK);
@@ -79,9 +81,13 @@ int main(int argc, char** argv) {
 		argp++;
 	}
 
-	// .. background usage
-	if (argc > argp && argv[argp][0] == 'f') {
-		use_background = false;
+	while (argp < argc) {
+		// .. background usage
+		switch (argv[argp][0]) {
+			case 'f': use_background = false; break;
+			case 'c': show_cpu_count = true; break;
+			case 't': show_clock_tck = true; break;
+		}
 		argp++;
 	}
 
@@ -168,6 +174,10 @@ int main(int argc, char** argv) {
 	// double buffer to flip
 	struct timeval * t_p = &t_a;
 	long * work_p = &work_a;
+
+	// show diagnostics before going into the background
+	if (show_cpu_count) printf("cpu_count=%d\n", cpu_count);
+	if (show_clock_tck) printf("clk_tck=%ld\n", clk_tck);
 
 	if (use_background) daemonise(false);
 
