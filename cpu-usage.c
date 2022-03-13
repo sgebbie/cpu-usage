@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -107,9 +108,12 @@ int main(int argc, char** argv) {
 	char spot[10];
 	int ul = (usage_length < 1 ? 1 : usage_length);
 	char graph[3 * ul];
-	for (int i = 0; i < sizeof(graph); i+=3) {
-		graph[i] = graph[i+1] = 0x00;
-		graph[i+2] = 0x20;
+	uint8_t graph_width[ul]; // introduce characater width tracking (to aid in eliding zero characters)
+	for (int i = 0; i < ul; i+=1) {
+		int j = i*3;
+		graph[j] = graph[j+1] = 0x00;
+		graph[j+2] = 0x20;
+		graph_width[j] = 1;
 	}
 
 #if LOG_DEBUG
@@ -312,10 +316,11 @@ int main(int argc, char** argv) {
 #endif
 
 		// update the graph
-		memmove(graph, graph+3, sizeof(graph) - 3);
+		memmove(graph, graph + 3, sizeof(graph) - 3);
 		graph[sizeof(graph) - 1] = cpu_char_c;
 		graph[sizeof(graph) - 2] = cpu_char_b;
 		graph[sizeof(graph) - 3] = cpu_char_a;
+		graph_width[sizeof(graph_width) - 1] = (cpu_char_a ? 1 : 0) + (cpu_char_b ? 1 : 0) + (cpu_char_c ? 1 : 0);
 
 		if (use_background) {
 			// output the graph
