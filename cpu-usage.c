@@ -109,11 +109,11 @@ int main(int argc, char** argv) {
 	int ul = (usage_length < 1 ? 1 : usage_length);
 	char graph[3 * ul];
 	uint8_t graph_width[ul]; // introduce characater width tracking (to aid in eliding zero characters)
-	for (int i = 0; i < ul; i+=1) {
+	for (int i = 0; i < ul; i++) {
 		int j = i*3;
 		graph[j] = graph[j+1] = 0x00;
 		graph[j+2] = 0x20;
-		graph_width[j] = 1;
+		graph_width[i] = 1;
 	}
 
 #if LOG_DEBUG
