@@ -105,7 +105,8 @@ int main(int argc, char** argv) {
 
 	// create our graph and zero to spaces
 	char spot[10];
-	char graph[3 * (usage_length < 1 ? 1 : usage_length) ];
+	int ul = (usage_length < 1 ? 1 : usage_length);
+	char graph[3 * ul];
 	for (int i = 0; i < sizeof(graph); i+=3) {
 		graph[i] = graph[i+1] = 0x00;
 		graph[i+2] = 0x20;
@@ -295,7 +296,7 @@ int main(int argc, char** argv) {
 			else if (cpu_char_a == 0 && cpu_char_b != 0) printf("%c%c", cpu_char_b, cpu_char_c);
 			else printf("%c%c%c", cpu_char_a, cpu_char_b, cpu_char_c);
 #endif
-			// note, we cheet and simplyout output NUL when we want and standard ASCII character
+			// note, we cheat and simply output NUL when we want and standard ASCII character
 			// this keeps our buffer using 3 bytes per character.
 			printf("%c%c%c", cpu_char_a, cpu_char_b, cpu_char_c);
 			if(usage_length && !count) {
@@ -331,19 +332,33 @@ int main(int argc, char** argv) {
 
 			// ouput the spot
 			int spot_len = snprintf(spot, sizeof(spot), "%ld", cpu_perc);
+#if LOG_DEBUG
+			printf("spot_len=%d\n", spot_len);
+#endif
+			int st = ftruncate(spot_file, spot_len);
+			if (st < 0) {
+				perror("spot truncate failed");
+				break;
+			}
 			off_t so = lseek(spot_file, 0, 0);
 			if (so == (off_t) -1) {
 				perror("spot seek failed");
 				break;
 			}
-			int sw = write(spot_file, spot, spot_len+1);
-			if (sw != spot_len+1) {
+			int sw = write(spot_file, spot, spot_len);
+			if (sw != spot_len) {
 				perror("spot write failed");
 				break;
 			}
 		}
 
-		
+#if LOG_DEBUG
+		{
+			int spot_len = snprintf(spot, sizeof(spot), "%ld", cpu_perc);
+			printf("spot_len=%d\n", spot_len);
+			int sw = write(2, spot, spot_len);
+		}
+#endif
 	}
 
 	ret = 0;
