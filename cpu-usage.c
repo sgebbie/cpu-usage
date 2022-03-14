@@ -40,6 +40,9 @@ UTF-8: e2 96 88 UTF-16BE: 2588 Decimal: &#9608; Octal: \022610
 //
 // See: U+28FF BRAILLE PATTERN DOTS-12345678
 
+// Future work:
+//   - extend to support network via: cat /proc/net/dev|grep '^wlp2s0'
+
 #define U_PER_S 1000000
 #define MAX_PATH 4096
 
